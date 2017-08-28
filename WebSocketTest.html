@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+	
+      <script type="text/javascript">
+
+      var ws;
+
+         function createSocket()
+         {
+            if ("WebSocket" in window)
+            {
+               alert("WebSocket is supported by your Browser!");
+               
+               // Let us open a web socket
+               ws = new WebSocket("ws://192.168.159.1:55777/echo");
+
+               ws.onerror = function (error)
+               {
+                  alert("WebSocket Error");
+               }
+            
+               ws.onmessage = function (evt)
+               {
+                  alert("Recieved Message: " + evt.data);
+               }
+
+               updateSockStat();
+            }
+         
+            else
+            {
+               // The browser doesn't support WebSocket
+               alert("WebSocket NOT supported by your Browser!");
+            }
+         }
+
+         function sockError(error)
+         {
+            alert("Error: " + error.message);
+         }
+
+         function sendMsg()
+         {
+            ws.send("messagemessagemessage");
+            updateSockStat();
+         }
+
+         function connectionCLosed()
+         {
+            updateSockStat();
+            alert("Connection is closed");
+         }
+
+         function recieveMessage(evt)
+         {
+            alert("Message is received. Data: " + evt.data);
+            var message = evt.data;
+            updateDataDisp(data);
+         }
+
+
+         function updateDataDisp(data)
+         {
+            document.getElementById("dataDisp").innerHTML = "hello";
+         }
+
+         function updateSockStat()
+         {
+            switch (ws.readyState) 
+            {
+               case 0:
+               {
+                  document.getElementById("sockStat").innerHTML = "connection not yet established";
+                  break;
+               }
+               case 1:
+               {
+                  document.getElementById("sockStat").innerHTML = "connection established successfully";
+                  break;
+               }
+               case 2:
+               {
+                  document.getElementById("sockStat").innerHTML = "connection undergoing handshake";
+                  break;
+               }
+               case 3:
+               {
+                  document.getElementById("sockStat").innerHTML = "connection closed or unsuccessful";
+                  break;
+               }
+               default:
+               {
+                  document.getElementById("sockStat").innerHTML = "Unknown Code";
+                  break;
+               }
+            }
+            
+         }
+
+      </script>
+		
+   </head>
+   <body>
+   
+      <div id="sse">
+         <a href="javascript:createSocket()">Create WebSocket</a>
+      </div>
+
+      <div id="sendMsgLabel">
+         <a href="javascript:sendMsg()">Send Message</a>
+      </div>
+
+      <div id="dataDisp">
+         Data Display
+      </div>
+
+      <div id="sockStat">
+         Socket Status
+      </div>
+      
+   </body>
+</html>
+
+<script type="text/javascript">
+      
+      document.getElementById("dataDisp").innerHTML = "hello 2";
+</script>
