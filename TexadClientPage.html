@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title> Texad </title>
+
+
+<style>
+
+html
+{
+    background-color: black;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.progressBar
+{
+    border: 2px solid white;
+    width: 400px;
+    height: 25px;
+    background-color: white;
+    position: absolute;
+    left: 800;
+    margin-left: 80px;
+    margin-top: 6px;
+    transition-duration: .4s;
+}
+
+.progressBar:hover
+{
+    border-radius: 7px;
+    transform: translate(0px,4px);
+    transform: scale(1.2);
+}
+
+.timeBox
+{
+    background-color: red;
+    width: 130px;
+    height: 15  px;
+    border: solid white;
+    clear: both;
+    position: relative;
+    left: 5%;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.listBox
+{
+    width: 300px;
+    height: 18px;
+    background: lightgrey;
+    position: relative;
+    border-radius: 5px;
+    left: 30px;
+    transition-duration: .2s;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    font-family: arial;
+    padding-top: 10px;
+    text-align: center;
+    float: left;
+    border: 2px solid black;
+}
+
+.listBox:hover
+{
+    height: 600px;
+    overflow-y: auto;
+    border-radius: 10px;
+    border: 4px solid green;
+}
+
+.listItem
+{
+    border: 2px solid black;
+    width: 280px;
+    height: 100px;
+    background: grey;
+    font-family: arial;
+    transition-duration: .3s;
+    text-align: left;
+    padding: 5px;
+    text-anchor: start;
+    overflow-y: auto;
+}
+
+.listItem:hover
+{
+    background: green;
+    border-radius: 10px;
+}
+
+.statItem
+{
+    border: 2px solid black;
+    width: 280px;
+    height: 35px;
+    background: grey;
+    font-family: arial;
+    transition-duration: .3s;
+    text-align: left;
+    padding: 5px;
+    text-anchor: start;
+    overflow: hidden;
+}
+
+.statItem:hover
+{
+    background: green;
+    border-radius: 10px;
+}
+
+.storyBG
+{
+    width: 800px;
+    height: 900px;
+    background: red;
+    padding: 15px;
+    border-radius: 150px 15px 15px 150px;
+    clear: left;
+    float: right;
+    position: relative;
+    transition-duration: 2s;
+    bottom: 100px;
+}
+
+.storyBG:hover
+{
+    border-radius: 115px 15px 15px 115px;
+}
+
+.storyHolder
+{
+    width: 700px;
+    height: 800px;
+    background: red;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.5),0 17px 50px 0 rgba(0,0,0,0.5);
+    float: right;
+    font-family: arial;
+    overflow-y: auto;
+    border: 8px solid black;
+    position: static;
+    transition-duration: .9s;
+}
+
+.storyHolder:hover
+{
+    transform: translate(0px,-8px);
+    box-shadow: 0 18px 20px 0 rgba(0,0,0,0.7),0 17px 50px 0 rgba(0,0,0,0.7);
+    border-radius: 8px;
+}
+
+.box1 
+{
+    font-family: arial;
+    font-size: 18px;
+    width: 300px;
+    height: 140px;
+    background-color: red;
+    padding: 15px;
+    margin: 5px;
+    border: 3px solid black;
+    color: white;
+    border-radius: 15px 50px 30px;
+    transition-duration: .5s;
+    word-break: keep-all;
+    opacity: .8;
+    clear: left;
+}
+
+.box1:hover
+{
+    font-size: 18px;
+    width: 450px;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    transform: translate(0px,-4px);
+    opacity: 1;
+    border-radius: 10px 30px 15px;
+    color: black;
+}
+
+.button 
+{
+    font-family: arial;
+    background: linear-gradient(white, #4d88ff);
+    border: 2px solid black;
+    color: white;
+    padding: 7px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    outline: none;
+    float:left;
+    margin-bottom: 10px;
+}
+
+.button:hover
+{
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.4),0 17px 50px 0 rgba(0,0,0,0.4);
+    transform: translate(0px,-6px);
+    border-radius: 30px;
+    opacity: 0.9;
+    color: black;
+    background: radial-gradient(white, #4d88ff);
+}
+
+.button:active
+{
+    transition-duration: .1s;
+    color: white;
+    transform: translate(0px, -2px);
+    border-color: white;
+    border-radius: 4px;
+    background: radial-gradient(#4d88ff, white);
+}
+
+.input1
+{
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.4),0 17px 50px 0 rgba(0,0,0,0.4);
+    font-family: arial;
+    transition-duration: .5s;
+    transition-timing-function: ease-out;
+    width: 7%;
+    top: 6%;
+    border: none;
+    border: none;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    clear: left;
+    clear: right;
+    outline: none;
+    position: absolute;
+    left: 1200px;
+    top: 920px;
+    z-index: 5;
+}
+
+.input1:hover
+{
+    border-color: white;
+    transform: translate(0px,-3px);
+}
+
+.input1:focus
+{
+    box-shadow: 0 14px 18px 0 rgba(0,0,0,0.6),0 17px 50px 0 rgba(0,0,0,0.6);
+    width: 35%;
+    border-color: #4d88ff;
+    border-radius: 7px;
+    transform: translate(0px,-10px);
+    height: 15px;
+}
+
+.input1:active
+{
+
+}
+
+
+
+</style>
+</head>
+
+
+
+<body>
+<div>
+<header>
+	<button class="button" id="b1" onclick="startLogin()">Login</button>
+	<button class="button" onclick="addToListBox()">Button</button>
+	<button class="button" onclick="startPbar(100)">Button</button>
+	<button class="button">Button</button>
+    <progress id="pbar1" value="35" max="100" class="progressBar">Test</progress>
+    <p class="timeBox" id="timer">1:00</p>
+</header>
+
+<div>
+<header>
+    <p id = "storyFrame" class="storyBG"></p>
+</header>
+</div>
+
+</div>
+
+<footer>
+	<p id = "locationBox" class="box1">Position</p>
+    <input class="input1" id="inputBox" onfocus="inputFocused()" onblur="inputUnfocused()" onsubmit="sendMessage()"></input>
+    <p id = "itemScrollBox" class="listBox">Items</p>
+    <p id = "statBox" class="listBox">Stats</p>
+    <p id = "companionBox" class="listBox">Companions</p>
+</footer>
+</div>
+
+<script type="text/javascript">
+
+initKeyListening();
+initStoryHolder();
+updateTimer();
+//fillBar();
+//initLists();
+var webSocketSupport = "WebSocket" in window;
+var socket;
+var inputIsFocused;
+var cmdAutos = ["","",""];
+var cmdAutoIndex = 0;
+var lastCommand;
+var currentTime = 3590;
+var currentHour = 23;
+var currentDay = 1;
+
+var pbar = document.getElementById("pbar1");
+
+setTimeout(initWebSocket,200);
+
+function startLogin()
+{
+    var usrName = window.prompt("Enter your username","Username");
+    if(usrName == null)
+    {
+        alert("Login Failed");
+    }
+    else
+    {
+        sendLoginInfo(usrName);
+        setTimeout(initialLoadDataRequest, 500);
+    }
+}
+
+function initWebSocket()
+{
+    if(webSocketSupport)
+    {
+        var port = "55777";
+        //var addr = "10.30.0.55";
+        var addr = "192.168.0.13";
+        var connStr = "ws://" + addr + ":" + port + "/echo";
+        socket = new WebSocket(connStr);
+
+        socket.onclose = function()
+        {
+            alert("Socket Closed");
+        };
+        
+        socket.onerror = function(error)
+        {
+            alert("Socket Error");
+        };
+
+        socket.onmessage = function(evt)
+        {
+            recieveMessage(evt.data);
+        };
+
+    }
+    else
+    {
+        alert("No Support for websocket");
+    }
+}
+
+function recieveMessage(data)
+{
+    processMessage(data);
+}
+
+function inputFocused()
+{
+    inputIsFocused = true;
+}
+
+function inputUnfocused()
+{
+    inputIsFocused = false;
+}
+
+function initStoryHolder()
+{
+    document.getElementById("storyFrame").innerHTML = "<p id = \"storyHolder\" class=\"storyHolder\"></p>";
+}
+
+function sendMessage(message)
+{
+    socket.send(message);
+}
+
+function initKeyListening()
+{
+    document.addEventListener("keydown", keyDownHandler, false);
+}
+
+function enterPressed()
+{
+    //alert("Enter pressed");
+    if(inputIsFocused)
+    {
+        var ib = document.getElementById("inputBox");
+        if(ib.value.charAt(0) == '/')
+        {
+            consoleCmd(ib.value.slice(0,1));
+            return;
+        }
+        cmdAutos[2] = cmdAutos[1];
+        cmdAutos[1] = ib.value;
+        lastCommand = ib.value;
+        sendMessage( "l" + ib.value);
+        ib.value = "";
+    }
+}
+
+function consoleCmd(cmd)
+{
+    var cmdParts = cmd.split(' ');
+}
+
+function keyDownHandler(e)
+{
+    if(e.keyCode == 13) //code for enter
+    {
+        enterPressed();
+    }
+    if(e.keyCode == 38) //up arrow
+    {
+        if(cmdAutoIndex < cmdAutos.length)
+            cmdAutoIndex ++;
+        document.getElementById("inputBox").value = cmdAutos[cmdAutoIndex];
+    }
+    if(e.keyCode == 40)
+    {
+        if(cmdAutoIndex > 0)
+            cmdAutoIndex --;
+        document.getElementById("inputBox").value = cmdAutos[cmdAutoIndex];
+    }
+}
+
+function addToListBox()
+{
+    var itemContents = "Test Contents";
+    var itemID = "1";
+    var listItem = "<p id = " + itemID + "\" class=\"listItem\">" + itemContents + "</p>";
+    var lb = document.getElementById("itemScrollBox");
+    lb.innerHTML += listItem;
+}
+
+function fillBar()
+{
+    var bar = document.getElementById("pbar");
+    if(bar.value < 100)
+    {
+        bar.value ++;
+        setTimeout(fillBar,50);
+    }
+}
+
+function initLists()
+{
+    var sb = document.getElementById("itemScrollBox");
+    var listTitle = "Items";
+    var titlehtml = "<p class=\"listHeaderItem\">" + listTitle + "</p>";
+    sb.innerHTML += titlehtml;
+    var statBox = document.getElementById("statBox");
+    statBox.innerHTML = "<p class=\listHeaderItem\">Stats</p>";
+}
+
+function updateTimer()
+{
+    var timer = document.getElementById("timer");
+    currentTime ++;
+    var seconds = currentTime;
+    var lnum = seconds / 60;
+    var rnum = seconds % 60;
+    var rstr = rnum.toPrecision(2) + "";
+    if(rnum < 10)
+    {
+        rstr = "0" + rnum.toPrecision(1);
+    }
+    lnum = Math.floor(lnum);
+    if(lnum >= 60)
+    {
+        currentTime = 0;
+        currentHour ++;
+        lnum = 0;
+    }
+    if(currentHour >= 24)
+    {
+        currentDay ++;
+        currentHour = 0;
+    }
+    var timeString = currentHour + ":" + lnum + ":" + rstr;
+    var dayString = "Day " + currentDay;
+    var dateString = dayString + ", " + timeString;
+    timer.innerHTML = dateString;
+    setTimeout(updateTimer,1000);
+}
+
+
+
+//STUFF FOR PROCESSING EVENTS
+
+function processMessage(msg)
+{
+    var token = msg[0];
+    var data = msg.slice(1,msg.length);
+    switch(token)
+    {
+        case('s'):
+        {
+            storyUpdate(data);
+            break;
+        }
+        case('i'):
+        {
+            itemUpdate(data);
+            break;
+        }
+        case('u'):
+        {
+            statUpdate(data);
+            break;
+        }
+        case('l'):
+        {
+            locationUpdate(data);
+            break;
+        }
+        case('t'):
+        {
+            timeUpdate(data);
+            break;
+        }
+        case('c'):
+        {
+            companionUpdate(data);
+            break;
+        }
+        case('g'):
+        {
+            startPbar(data);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+function storyUpdate(update)
+{
+    var story = document.getElementById("storyHolder").innerHTML += update + "<BR/><BR/>";
+}
+
+function itemUpdate(update)
+{
+    document.getElementById("itemScrollBox").innerHTML = "Items";
+    var updateStr = update;
+    var itemStrings = updateStr.split('|');
+    
+    itemStrings.forEach(addItemToItemListBox);
+}
+
+function locationUpdate(update)
+{
+    var locStr = update;
+    document.getElementById("locationBox").innerHTML = locStr;
+}
+
+function timeUpdate(time)
+{
+    var timeMessage = time.replace("t","");
+    var timeParts = timeMessage.split('|');
+    var secondDiff = Number(timeParts[2]) - currentTime;
+    currentDay = Number(timeParts[0]);
+    currentHour = Number(timeParts[1]);
+    currentTime = Number(timeParts[2]);
+    //alert("Seconds diff was: "+ secondDiff);
+}
+
+function addItemToItemListBox(item, index)
+{
+    var itemContents = item.split(",");
+    var itemID = "inventoryItem" + index.toString();
+    var listItem = "<p id=\"" + itemID + "\" class=\"listItem\">";
+    itemContents.forEach(function(item,index){
+        listItem += itemContents[index] + "<br/>";
+    });
+    listItem += "</p>";
+    var lb = document.getElementById("itemScrollBox");
+    lb.innerHTML += listItem;
+}
+
+function statUpdate(update)
+{
+    document.getElementById("statBox").innerHTML = "Stats";
+    var updateStr = update;
+    var statStrings = updateStr.split('|');
+    statStrings.forEach(addItemToStatListBox);
+}
+
+function addItemToStatListBox(item, index)
+{
+    var itemContents = item.split(",");
+    var itemID = "inventoryItem" + index.toString();
+    var listItem = "<p id=\"" + itemID + "\" class=\"statItem\">";
+    itemContents.forEach(function(item,index){
+        listItem += itemContents[index] + "<br/>";
+    });
+    listItem += "</p>";
+    var sb = document.getElementById("statBox");
+    sb.innerHTML += listItem;
+}
+
+function companionUpdate(update)
+{
+    document.getElementById("companionBox").innerHTML = "Companions";
+    var updateStr = update;
+    var companionStrings = updateStr.split('|');
+    companionStrings.forEach(addItemToCompanionBox);
+}
+
+function addItemToCompanionBox(item, index)
+{
+    var companionContents = item.split(",");
+    var companionID = "companion" + index.toString();
+    var listItem = "<p id=\"" + companionID + "\" class=\"listItem\">";
+    companionContents.forEach(function(item,index){
+        listItem += companionContents[index] + "<br/>";
+    });
+    listItem += "</p>";
+    var cb = document.getElementById("companionBox");
+    cb.innerHTML += listItem;
+}
+
+function startPbar(barData)
+{
+    var data = barData.split('|');
+    pbar.value = 0;
+    pbar.max = Number(data[1]);
+    pBarTick();
+}
+
+function pBarTick()
+{
+    if(pbar.value < pbar.max)
+    {
+        pbar.value += 11;
+        setTimeout(pBarTick,10);
+    }
+    else
+    {
+        pbar.value = 0;
+    }
+}
+
+//UPDATE REQUESTS
+
+function initialLoadDataRequest()
+{
+    setTimeout(requestInventoryUpdate,100);
+    setTimeout(requestStatUpdate,101);
+    setTimeout(requestLocationUpdate,102);
+    setTimeout(requestCompanionUpdate,103);
+}
+
+function requestInventoryUpdate()
+{
+    sendMessage("i");
+}
+
+function requestStatUpdate()
+{
+    sendMessage("u");
+}
+
+function requestLocationUpdate()
+{
+    sendMessage("p");
+}
+
+function requestCompanionUpdate()
+{
+    sendMessage("c");
+}
+
+function sendLoginInfo(info)
+{
+    sendMessage("+" + info);
+}
+
+</script>
+</body>
+
+</html>
