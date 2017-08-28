@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 
+//This is the texad server .cs file. Testing Git functionality to see if I figured it out yet
+
 namespace Texad_Server
 {
     public class TexadServer
