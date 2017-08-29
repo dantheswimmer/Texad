@@ -8,6 +8,9 @@ namespace Texad_Server
 {
     public class TexadCommandInterpreter
     {
+        public List<string> releventVerbs;
+        public List<string> releventNouns;
+
         public static void interperateCommand(string cmd, TexadClient client)
         {
             string verb = null;

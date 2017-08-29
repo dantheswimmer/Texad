@@ -21,6 +21,20 @@ namespace Texad_Server
             maxValue = mv;
         }
 
+        public static void addBaseStats(StatManager sm)
+        {
+            TexadStat hpStat = new TexadStat("Health", 0, 100, 100);
+            TexadStat hungerStat = new TexadStat("Hunger", 1, 50, 100);
+            TexadStat levelStat = new TexadStat("Level", 2, 1);
+            TexadStat strengthStat = new TexadStat("Strength", 3, 15);
+            TexadStat intelStat = new TexadStat("Intellegence", 4, 15);
+            sm.addStat(hpStat);
+            sm.addStat(hungerStat);
+            sm.addStat(levelStat);
+            sm.addStat(strengthStat);
+            sm.addStat(intelStat);
+        }
+
         public void addToStat(int delta)
         {
             if (currentValue == -1)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texad_Server
 {
-    class InventoryManager
+    public class InventoryManager
     {
         List<TexadItem> items;
 
@@ -23,6 +23,19 @@ namespace Texad_Server
         public void removeItem(TexadItem item)
         {
             items.Remove(item);
+        }
+
+
+        public string serializeInventory()
+        {
+            string serStr = "i";
+            for (int i = 0; i < items.Count; i++)
+            {
+                serStr += items[i].serializeItemData();
+                if (i < items.Count - 1)
+                    serStr += "|";
+            }
+            return serStr;
         }
     }
 }

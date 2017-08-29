@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Texad_Server
 {
-    class StatManager
+    public class StatManager
     {
         public List<TexadStat> stats;
+
+        public void addStat(TexadStat stat)
+        {
+            stats.Add(stat);
+        }
 
         public TexadStat getStatWithName(string name)
         {
@@ -18,6 +23,19 @@ namespace Texad_Server
                     return s;
             }
             return null;
+        }
+
+
+        public string serializeStats(StatManager sm)
+        {
+            string serStr = "u";
+            for (int i = 0; i < stats.Count; i++)
+            {
+                serStr += stats[i].serializeStatData();
+                if (i < stats.Count - 1)
+                    serStr += "|";
+            }
+            return serStr;
         }
     }
 }

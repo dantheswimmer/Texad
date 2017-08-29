@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Texad_Server
 {
-    class TexadCharacter
+    public class TexadCharacter
     {
         public string displayName;
-        private StatManager statManager;
-        private ActionManager actionManager;
-        private InventoryManager inventoryManager;
+        public  StatManager statManager;
+        public ActionManager actionManager;
+        public InventoryManager inventoryManager;
         private LocationManager locationManager;
         private TexadServer server;
 

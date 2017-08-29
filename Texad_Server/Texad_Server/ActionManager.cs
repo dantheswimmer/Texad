@@ -6,9 +6,19 @@ using System.Threading.Tasks;
 
 namespace Texad_Server
 {
-    class ActionManager
+    public class ActionManager
     {
-        List<TexadAction> actions;
+        List<TexadAction> availableActions;
+
+        public void addActionToAvailable(TexadAction a)
+        {
+            availableActions.Add(a);
+        }
+
+        public void removeActionFromAvailable(TexadAction a)
+        {
+            availableActions.Remove(a);
+        }
 
     }
 }

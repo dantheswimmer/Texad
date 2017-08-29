@@ -26,7 +26,7 @@ namespace Texad_Server
         public string quantity = "1";
         public List<TexadAction> capableOf = new List<TexadAction>();
         public List<TexadItemAttribute> attributes;
-        public TexadClient owner;
+        public TexadCharacter owner;
 
         public TexadItem(string n, int id, TexadItemAttribute[] atts = null)
         {
@@ -50,7 +50,7 @@ namespace Texad_Server
             attributes.Add(att);                
         }
 
-        public void itemAdded(TexadClient newOwner)
+        public void itemAdded(TexadCharacter newOwner)
         {
             owner = newOwner;
             addActionsToAvailable();
@@ -70,7 +70,7 @@ namespace Texad_Server
                 }
             }
             removeActionsFromAvailable();
-            owner.playerItems.Remove(this);
+            owner.inventoryManager.removeItem(this);
             owner = null;
         }
 
@@ -118,7 +118,7 @@ namespace Texad_Server
         {
             foreach(TexadAction a in capableOf)
             {
-                owner.availableActions.Add(a);
+                owner.actionManager.addActionToAvailable(a);
             }
         }
 
@@ -126,7 +126,7 @@ namespace Texad_Server
         {
             foreach(TexadAction a in capableOf)
             {
-                owner.availableActions.Remove(a);
+                owner.actionManager.removeActionFromAvailable(a);
             }
         }
 

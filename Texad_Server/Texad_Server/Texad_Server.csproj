@@ -69,7 +69,6 @@
     <Compile Include="TexadServerEventSystem.cs" />
     <Compile Include="TexadItem.cs" />
     <Compile Include="TexadScene.cs" />
-    <Compile Include="TexadSerializer.cs" />
     <Compile Include="TexadServer.cs" />
     <Compile Include="TexadStat.cs" />
     <Compile Include="TexadWorld.cs" />

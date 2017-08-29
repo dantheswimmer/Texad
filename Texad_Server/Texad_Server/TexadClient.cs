@@ -22,12 +22,7 @@ namespace Texad_Server
         public bool handshakeDone = false;
 
         //Player State Data
-        public TexadSector currentSector;
-        public TexadScene currentScene;
-        public List<TexadItem> playerItems;
-        public List<TexadStat> playerStats;
-        public List<TexadAction> availableActions;
-
+        public TexadCharacter playerCharacter;
         public List<TexadActionEvent> eventQueue;
         public uint eventStepTime = 0;
 
@@ -35,6 +30,7 @@ namespace Texad_Server
 
         public TexadClient(TcpClient c, TexadServer myServer, TexadWorld w)
         {
+            playerCharacter = new TexadCharacter(myServer,w.startScene);
             this.myServer = myServer;
             world = w;
             tcpClient = c;
