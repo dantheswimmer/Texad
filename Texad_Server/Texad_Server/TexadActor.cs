@@ -16,6 +16,7 @@ namespace Texad_Server
         {
 
         }
+
         public TexadActor(string n, string d)
         {
             actorName = n;
@@ -26,23 +27,5 @@ namespace Texad_Server
         {
             return actorName + ", " + actorDescription;
         }
-    }
-
-    public class TexadCharacter : TexadActor
-    {
-        public TexadBehavior attackBehavior;
-        public TexadBehavior defenceBehavior;
-        public TexadBehavior movementBehavior;
-
-    }
-
-    public class TexadNPC : TexadCharacter
-    {
-
-    }
-
-    public class TexadPlayer : TexadCharacter
-    {
-
     }
 }

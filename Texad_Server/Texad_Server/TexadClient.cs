@@ -31,9 +31,12 @@ namespace Texad_Server
         public List<TexadActionEvent> eventQueue;
         public uint eventStepTime = 0;
 
-        public TexadClient(TcpClient c, TexadServer myServer)
+        private TexadWorld world;
+
+        public TexadClient(TcpClient c, TexadServer myServer, TexadWorld w)
         {
             this.myServer = myServer;
+            world = w;
             tcpClient = c;
             clientStream = tcpClient.GetStream();
             clientStream.Flush();
@@ -46,8 +49,8 @@ namespace Texad_Server
             eventQueue = new List<TexadActionEvent>();
 
             availableActions.Add(new MoveAction(2000));
-            playerItems.Add(new TexadItem("Test Item",1));
-            playerItems.Add(new TexadItem("Test Item2",2));
+            playerItems.Add(new TexadItem("Test Item", 1));
+            playerItems.Add(new TexadItem("Test Item2", 2));
             playerItems.Add(new TexadItem("Test Item3", 5));
             playerItems.Add(new TexadItem("Money", 3, new TexadItemAttribute("Quantity", "15")));
             TexadItem bread = new TexadItem("Stale Bread", 4, new TexadItemAttribute("Quantity", "15"));
@@ -62,67 +65,14 @@ namespace Texad_Server
             playerStats.Add(new TexadStat("Intellegence",4, 55));
             playerStats.Add(new TexadStat("Strength",5, 78));
 
-            currentSector = TexadSector.getStartSector();
-            currentScene = TexadSector.addTestScenes(currentSector);
+            currentSector = world.startSector;
+            currentScene = world.startScene;
         }
 
-        public void addItem(TexadItem item)
-        {
-            playerItems.Add(item);
-            item.itemAdded(this);
-        }
-
-        public void removeItem(TexadItem item)
-        {
-            item.itemRemoved();
-        }
-
-        public string getLocationDescription()
-        {
-            return "You are in " + currentScene.getSceneDescription();
-        }
-
-        public void clientMove(SceneConnection newSceneConn)
-        {
-            if (newSceneConn == null)
-            {
-                myServer.sendClientStoryUpdate("You cannot go that way!",this);
-                return;
-            }
-            if (!newSceneConn.locked)
-            {
-                TexadScene oldScene = currentScene;
-                currentScene = newSceneConn.endpoint;
-                clientActionNotification("Moved into " + currentScene.sceneName);
-                currentScene.playerEnteredScene(this,oldScene);
-                myServer.sendClientLocationUpdate(this);
-                myServer.sendLocationDescription(this);
-            }
-            else
-            {
-                Console.WriteLine("Cound not move, entry blocked");
-                myServer.sendClientStoryUpdate("You cannot go that way, it is locked", this);
-            }
-        }
-
-        public void clientActionNotification(string not)
-        {
-            myServer.sendClientStoryUpdate(not, this);
-        }
-
-        public TexadStat getStatWithName(string name)
-        {
-            foreach(TexadStat s in playerStats)
-            {
-                if (s.statName.Equals(name))
-                    return s;
-            }
-            return null;
-        }
+       
 
         public void stepEventQueue()
         {
-            uint stepTime = 0;
             while (true)
             {
                 eventStepTime += 10;
@@ -137,7 +87,6 @@ namespace Texad_Server
                     }
                 }
             }
-
         }
 
         public void addToEventQueue(TexadActionEvent ae)
@@ -151,12 +100,11 @@ namespace Texad_Server
         {
             while(clientAlive)
             {
-                while (!clientStream.DataAvailable) ;
+                while (!clientStream.DataAvailable);
                 Byte[] data = new Byte[tcpClient.Available];
                 clientStream.Read(data, 0, data.Length);
                 myServer.recieveClientMessage(data, this);
             }
         }
-
     }
 }

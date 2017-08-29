@@ -26,7 +26,7 @@ namespace Texad_Server
         public int serverSeconds = 3545;
         public int serverHours = 5;
         public int serverDays;
-        private int clientTimeTruthCheckInterval = 60;
+        private int clientTimeTruthCheckInterval = 10;
 
         private TexadWorld world;
 
@@ -40,6 +40,7 @@ namespace Texad_Server
             t.Start();
             Thread timeThread = new Thread(updateServerTime);
             timeThread.Start();
+            world = new TexadWorld();
         }
 
         public void updateServerTime()
@@ -64,7 +65,6 @@ namespace Texad_Server
                 }
                 if (serverHours >= 24)
                 {
-                    
                     serverHours = 0;
                     serverDays++;
                 }
@@ -202,7 +202,7 @@ namespace Texad_Server
 
         public void addClient(TcpClient c)
         {
-            TexadClient tc = new TexadClient(c,this);
+            TexadClient tc = new TexadClient(c,this,world);
             assignClientID(tc);
             clients.Add(tc);
             WebsocketUtility.websocketHandshake(c);
@@ -278,7 +278,7 @@ namespace Texad_Server
                     
                     Console.WriteLine("Listnener had pending...");
                     bool existingClient = myServer.checkClientConnected(newClient);
-                    if (existingClient)
+                    if (false)//existingClient)
                     {
                         Console.WriteLine("Client Connected Already, not accepted");
                     }

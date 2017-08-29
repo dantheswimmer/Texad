@@ -13,9 +13,20 @@ namespace Texad_Server
         int numBiomesX;
         int numBiomesY;
 
+        public TexadBiome startBiome;
+        public TexadSector startSector;
+        public TexadScene startScene;
+
         public TexadWorld()
         {
+            initStartScene();
+        }
 
+        public void initStartScene()
+        {
+            startBiome = TexadBiome.getStartBiome();
+            startSector = TexadSector.getStartSector(startBiome);
+            startScene = TexadSector.addTestScenes(startSector);
         }
 
         public void incrementWorldTime()
@@ -32,6 +43,16 @@ namespace Texad_Server
         TexadSector[][] biomesSectors;
         int numSectorsX;
         int numSectorsY;
+
+        public TexadBiome(string name)
+        {
+            biomeName = name;
+        }
+
+        public static TexadBiome getStartBiome()
+        {
+            return (new TexadBiome("Start Biome"));
+        }
     }
 
     public class TexadSector //Sectors are medium areas that make up biomes
@@ -40,15 +61,12 @@ namespace Texad_Server
         public string sectorName;
         public string sectorDescription;
 
-        public static TexadSector getStartSector()
+        public static TexadSector getStartSector(TexadBiome biome)
         {
-            TexadWorld w = new TexadWorld();
-            TexadBiome b = new TexadBiome();
-            b.biomeName = "Test Biome";
-            b.world = w;
+            biome.biomeName = "Test Biome";
             TexadSector s = new TexadSector();
             s.sectorName = "Test Sector";
-            s.biome = b;
+            s.biome = biome;
             return s;
         }
 
