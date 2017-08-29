@@ -8,7 +8,19 @@ namespace Texad_Server
 {
     public class ActionManager
     {
-        List<TexadAction> availableActions;
+        public TexadCharacter owner;
+        public List<TexadAction> availableActions;
+
+        public ActionManager(TexadCharacter owner)
+        {
+            this.owner = owner;
+            availableActions = new List<TexadAction>();
+        }
+
+        public void addBasicActions()
+        {
+            addActionToAvailable(new MoveAction(200));
+        }
 
         public void addActionToAvailable(TexadAction a)
         {

@@ -10,8 +10,16 @@ namespace Texad_Server
     {
         public List<string> releventVerbs;
         public List<string> releventNouns;
+        public ActionManager actionManager;
 
-        public static void interperateCommand(string cmd, TexadClient client)
+        public TexadCommandInterpreter(ActionManager am)
+        {
+            actionManager = am;
+            releventNouns = new List<string>();
+            releventVerbs = new List<string>();
+        }
+
+        public void interperateCommand(string cmd, TexadClient client)
         {
             string verb = null;
             string noun = null;
@@ -35,7 +43,7 @@ namespace Texad_Server
             Console.WriteLine("verb was: " + verb + ", noun was: " + noun);
             if (verb != null)
             {      
-                foreach(TexadAction a in client.availableActions)
+                foreach(TexadAction a in actionManager.availableActions)
                 {
                     if(verb.Equals(a.actionName))
                     {

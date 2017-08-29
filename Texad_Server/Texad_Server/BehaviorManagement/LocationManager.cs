@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Texad_Server
 {
-    class LocationManager
+    public class LocationManager
     {
+        TexadCharacter owner;
         protected TexadServer server;
         protected TexadScene currentScene;
         protected TexadWorld world;
 
-        public LocationManager(TexadServer server, TexadScene s)
+        public LocationManager(TexadServer server, TexadCharacter owner, TexadScene s)
         {
+            this.owner = owner;
             world = s.sector.biome.world;
             currentScene = s;
             this.server = server;
@@ -36,6 +38,7 @@ namespace Texad_Server
             }
             else
             {
+
             }
         }
 
@@ -49,7 +52,7 @@ namespace Texad_Server
     {
         private TexadClient client;
 
-        public PlayerLocationManager(TexadServer server, TexadClient client, TexadScene s) : base(server,s)
+        public PlayerLocationManager(TexadServer server, TexadCharacter owner, TexadClient client, TexadScene s) : base(server, owner, s)
         {
             this.client = client;
         }

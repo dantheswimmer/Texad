@@ -47,7 +47,6 @@ namespace Texad_Server
         {
 
         }
-
     }
 
     public class MoveAction : TexadAction
@@ -107,23 +106,11 @@ namespace Texad_Server
 
     public class TexadActionSystem
     {
-        public static TexadAction[] basicActions =
-        {
-            new TexadAction(-1,"No action"),
-            new TexadAction(13,"attack"),
-        };
-
         public static TexadAction NO_ACTION = new TexadAction(-1, "No action");
 
         public static int retrieveActionIDFromVerb(string verb, TexadClient client)
         {
             int ret = -1;
-            //Check basicActions
-            foreach(TexadAction a in basicActions)
-            {
-                if (a.actionName.Equals(verb))
-                    return a.actionID;
-            }
             //Check any custom actions the player may have
             foreach(TexadItem item in client.playerItems)
             {
@@ -143,23 +130,6 @@ namespace Texad_Server
                     candidates.Add(item);
             }
             return candidates;
-        }
-
-        public static void setPrecidentForAction(TexadClient client, TexadAction action, TexadItem item)
-        {
-            if(item.canDoAction(action.actionID))
-            {
-                TexadAction targetAction = item.getActionOfID(action.actionID);
-                targetAction.hasPrecidence = true;
-            }
-            foreach (TexadItem otherItem in client.playerItems)
-            {
-                if (!otherItem.Equals(item))
-                {
-                    TexadAction unsetTarget = item.getActionOfID(action.actionID);
-                    unsetTarget.hasPrecidence = false;
-                }
-            }
-        }
+        }        
     }
 }

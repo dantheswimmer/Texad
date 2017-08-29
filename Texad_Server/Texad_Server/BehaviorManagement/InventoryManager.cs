@@ -8,23 +8,35 @@ namespace Texad_Server
 {
     public class InventoryManager
     {
+        TexadCharacter owner;
         List<TexadItem> items;
 
-        public InventoryManager()
+        public InventoryManager(TexadCharacter owner)
         {
+            this.owner = owner;
             items = new List<TexadItem>();
+            addStartingItems();
+        }
+
+        public void addStartingItems()
+        {
+            TexadItem breadItem = new TexadItem("Barley Bread", 1, new QuantityAttribute("5"));
+            TexadItem moneyItem = new TexadItem("Copper Coin", 2, new QuantityAttribute("15"));
+            addItem(breadItem);
+            addItem(moneyItem);
         }
 
         public void addItem(TexadItem item)
         {
             items.Add(item);
+            item.itemAdded(owner);
         }
 
         public void removeItem(TexadItem item)
         {
             items.Remove(item);
+            item.itemRemoved();
         }
-
 
         public string serializeInventory()
         {

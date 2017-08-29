@@ -23,6 +23,7 @@ namespace Texad_Server
 
         //Player State Data
         public TexadCharacter playerCharacter;
+        public TexadCommandInterpreter cmdIntp;
         public List<TexadActionEvent> eventQueue;
         public uint eventStepTime = 0;
 
@@ -30,7 +31,6 @@ namespace Texad_Server
 
         public TexadClient(TcpClient c, TexadServer myServer, TexadWorld w)
         {
-            playerCharacter = new TexadCharacter(myServer,w.startScene);
             this.myServer = myServer;
             world = w;
             tcpClient = c;
@@ -39,33 +39,10 @@ namespace Texad_Server
             clientAlive = true;
             Thread eventThread = new Thread(stepEventQueue);
             eventThread.Start();
-            playerItems = new List<TexadItem>();
-            playerStats = new List<TexadStat>();
-            availableActions = new List<TexadAction>();
             eventQueue = new List<TexadActionEvent>();
-
-            availableActions.Add(new MoveAction(2000));
-            playerItems.Add(new TexadItem("Test Item", 1));
-            playerItems.Add(new TexadItem("Test Item2", 2));
-            playerItems.Add(new TexadItem("Test Item3", 5));
-            playerItems.Add(new TexadItem("Money", 3, new TexadItemAttribute("Quantity", "15")));
-            TexadItem bread = new TexadItem("Stale Bread", 4, new TexadItemAttribute("Quantity", "15"));
-            TexadAction eatAction = new EatAction(4000, 50);
-            eatAction.actionOwner = bread;
-            bread.capableOf.Add(eatAction);
-            addItem(bread);
-
-            playerStats.Add(new TexadStat("Health",1, 100, 100));
-            playerStats.Add(new TexadStat("Hunger",2, 35, 100));
-            playerStats.Add(new TexadStat("Fatigue",3, 0));
-            playerStats.Add(new TexadStat("Intellegence",4, 55));
-            playerStats.Add(new TexadStat("Strength",5, 78));
-
-            currentSector = world.startSector;
-            currentScene = world.startScene;
+            playerCharacter = new TexadPlayerCharacter(this, myServer, w.startScene);
+            cmdIntp = new TexadCommandInterpreter(playerCharacter.actionManager);
         }
-
-       
 
         public void stepEventQueue()
         {
