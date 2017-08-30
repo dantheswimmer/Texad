@@ -9,18 +9,23 @@ namespace Texad_Server
     public class ActionManager
     {
         public TexadCharacter owner;
+        public LocationManager locationManager;
         public List<TexadAction> availableActions;
 
-        public ActionManager(TexadCharacter owner)
+        public ActionManager(LocationManager lm, TexadCharacter owner)
         {
             this.owner = owner;
+            locationManager = lm;
             availableActions = new List<TexadAction>();
+            addBasicActions();
         }
 
         public void addBasicActions()
         {
-            addActionToAvailable(new MoveAction(200));
+            addActionToAvailable(new PlayerMoveAction(2000));
         }
+
+        
 
         public void addActionToAvailable(TexadAction a)
         {

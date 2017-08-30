@@ -13,6 +13,8 @@ namespace Texad_Server
 
         public StatManager(TexadCharacter owner)
         {
+            stats = new List<TexadStat>();
+            addBaseStats();
             this.owner = owner;
         }
 
@@ -47,7 +49,7 @@ namespace Texad_Server
         }
 
 
-        public string serializeStats(StatManager sm)
+        public string serializeStats()
         {
             string serStr = "u";
             for (int i = 0; i < stats.Count; i++)

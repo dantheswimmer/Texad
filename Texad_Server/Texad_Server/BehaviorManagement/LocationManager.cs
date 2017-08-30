@@ -8,7 +8,7 @@ namespace Texad_Server
 {
     public class LocationManager
     {
-        TexadCharacter owner;
+        protected TexadCharacter owner;
         protected TexadServer server;
         protected TexadScene currentScene;
         protected TexadWorld world;
@@ -48,13 +48,19 @@ namespace Texad_Server
         }
     }
 
-    class PlayerLocationManager : LocationManager
+    public class PlayerLocationManager : LocationManager
     {
         private TexadClient client;
 
         public PlayerLocationManager(TexadServer server, TexadCharacter owner, TexadClient client, TexadScene s) : base(server, owner, s)
         {
             this.client = client;
+        }
+
+        public void moveScene(string dirString)
+        {
+            SceneConnection sc = currentScene.getConnectionFromString(dirString);
+            moveScene(sc);
         }
 
         public override void moveScene(SceneConnection connection)
@@ -69,7 +75,7 @@ namespace Texad_Server
             {
                 TexadScene oldScene = currentScene;
                 currentScene = connection.endpoint;
-                client.clientActionNotification("Moved into " + currentScene.sceneName);
+                ((TexadPlayerCharacter)owner).playerDidAction("Moved into " + currentScene.sceneName);
                 currentScene.playerEnteredScene(client, oldScene);
                 server.sendClientLocationUpdate(client);
                 server.sendLocationDescription(client);
@@ -80,5 +86,11 @@ namespace Texad_Server
                 server.sendClientStoryUpdate("You cannot go that way, it is locked", client);
             }
         }
+
+        public string getPositionString()
+        {
+            return currentScene.sector.biome.biomeName + ": " + currentScene.sector.sectorName + ": " + currentScene.sceneName;
+        }
+
     }
 }

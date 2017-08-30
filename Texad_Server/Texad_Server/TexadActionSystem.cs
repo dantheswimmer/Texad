@@ -25,9 +25,9 @@ namespace Texad_Server
         public int[] preReqActionIDs;
         public bool hasPrecidence;
         public uint actionTime;
-        public object actionOwner;
+        public TexadCharacter actionPerformer;
 
-        public TexadAction(int id, string n, object aOwner = null, uint actionTime = 500, string[] aliases = null, int[] preReqs = null)
+        public TexadAction(int id, string n, TexadCharacter aPerf = null, uint actionTime = 500, string[] aliases = null, int[] preReqs = null)
         {
             actionID = id;
             actionName = n;
@@ -35,7 +35,7 @@ namespace Texad_Server
             preReqActionIDs = preReqs;
             hasPrecidence = false;
             this.actionTime = actionTime;
-            actionOwner = aOwner;
+            actionPerformer = aPerf;
         }
 
         public TexadAction()
@@ -49,9 +49,9 @@ namespace Texad_Server
         }
     }
 
-    public class MoveAction : TexadAction
+    public class PlayerMoveAction : TexadAction
     {
-        public MoveAction(uint aTime)
+        public PlayerMoveAction(uint aTime)
         {
             actionName = "move";
             actionTime = aTime;
@@ -60,33 +60,44 @@ namespace Texad_Server
         public override void doAction(object target, object source)
         {
             string moveDir = (string)target;
-            TexadClient mover = (TexadClient)source;
-            mover.clientMove(mover.currentScene.getConnectionFromString(moveDir));
+            TexadPlayerCharacter mover = (TexadPlayerCharacter)source;
+            mover.locationManager.moveScene(moveDir);
         }
     }
 
     public class EatAction : TexadAction
     {
-        int foodValue;
         public EatAction(uint aTime, int fVal)
         {
             actionTime = aTime;
             actionName = "eat";
-            foodValue = fVal;
         }
 
         public override void doAction(object target, object source)
         {
-            TexadClient c = (TexadClient)source;
-            TexadStat hungerStat = c.getStatWithName("Hunger");
-            if (hungerStat == null)
+            TexadItem eatTarget = (TexadItem)target;
+            if(eatTarget == null) { return; } //Not even an item
+            TexadItemAttribute fVal = eatTarget.getItemAttOfName("Food Value");
+            int foodValue = Convert.ToInt16(fVal.currentValue);
+            if(fVal == null)
+            {
+                //you cant eat this
                 return;
+            }
+            TexadCharacter c = (TexadCharacter)source;
+            TexadStat hungerStat = c.statManager.getStatWithName("Hunger");
+            if (hungerStat == null)
+            {
+                //no hunger stat
+                return;
+            }
             hungerStat.addToStat(foodValue);
-            TexadItem foodItem = (TexadItem)actionOwner;
-            foodItem.itemRemoved();
-            c.clientActionNotification("You have eaten " + foodItem.attributes[0].name + ", raising your hunger to: " + c.getStatWithName("Hunger").currentValue);
-            c.myServer.sendClientItemUpdate(c);
-            c.myServer.sendClientStatUpdate(c);
+            eatTarget.itemRemoved();
+            TexadPlayerCharacter player = (TexadPlayerCharacter)source;
+            if(player != null)
+            {
+                player.playerDidAction("You have eaten " + eatTarget.attributes[0].name);
+            }
         }
     }
 
@@ -102,34 +113,5 @@ namespace Texad_Server
             this.target = target;
             this.source = source;
         }
-    }
-
-    public class TexadActionSystem
-    {
-        public static TexadAction NO_ACTION = new TexadAction(-1, "No action");
-
-        public static int retrieveActionIDFromVerb(string verb, TexadClient client)
-        {
-            int ret = -1;
-            //Check any custom actions the player may have
-            foreach(TexadItem item in client.playerItems)
-            {
-                TexadAction a = item.getActionOfVerb(verb);
-                if (!a.Equals(TexadActionSystem.NO_ACTION))
-                    return a.actionID;
-            }
-            return ret;
-        }
-
-        public static List<TexadItem> canDoAction(TexadAction action, TexadClient attemptee)
-        {
-            List<TexadItem> candidates = new List<TexadItem>();
-            foreach(TexadItem item in attemptee.playerItems)
-            {
-                if (item.canDoAction(action.actionID))
-                    candidates.Add(item);
-            }
-            return candidates;
-        }        
     }
 }

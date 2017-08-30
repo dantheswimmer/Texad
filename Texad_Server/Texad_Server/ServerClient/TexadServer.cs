@@ -59,9 +59,9 @@ namespace Texad_Server
                     serverSeconds = 0;
                     serverHours++;
                     if (serverHours == 19 && serverSeconds == 0)
-                        sendAllStoryUpdate("The sun sinks below the horizon and the creatures of the night emerge. It is now nighttime.");
+                        sendAllStoryUpdate(StoryQueues.getDuskQueue());
                     if (serverHours == 6 && serverSeconds == 0)
-                        sendAllStoryUpdate("The first light of dawn breaks in the distance, and landscape glows with morning. It is now daytime.");
+                        sendAllStoryUpdate(StoryQueues.getDawnQueue());
                 }
                 if (serverHours >= 24)
                 {
@@ -103,7 +103,7 @@ namespace Texad_Server
                 }
                 case TexadServerEventSystem.COMMAND_PROCESS_RERQUEST:
                 {
-                    TexadCommandInterpreter.interperateCommand(msgStr.Remove(0,1), sender);
+                    sender.interperateCommand(msgStr.Remove(0,1));
                     break;
                 }
                 case TexadServerEventSystem.COMPANION_UPDATE_REQUEST:
@@ -127,12 +127,12 @@ namespace Texad_Server
 
         public void sendClientStatUpdate(TexadClient c)
         {
-            sendClientMessage(Encoding.UTF8.GetBytes(TexadSerializer.serializeStats(c)), c);
+            sendClientMessage(Encoding.UTF8.GetBytes(c.getStatUpdateString()), c);
         }
 
         public void sendClientItemUpdate(TexadClient c)
         {
-            sendClientMessage(Encoding.UTF8.GetBytes(TexadSerializer.serializeInventory(c)), c);
+            sendClientMessage(Encoding.UTF8.GetBytes(c.getItemUpdateString()), c);
         }
 
         public void sendAllStoryUpdate(string update)
@@ -157,12 +157,12 @@ namespace Texad_Server
 
         public void sendClientLocationUpdate(TexadClient c)
         {
-            sendClientMessage(Encoding.UTF8.GetBytes("l" + c.currentScene.sceneName + ": " + c.currentSector.sectorName + ": " + c.currentSector.biome.biomeName), c);
+            sendClientMessage(Encoding.UTF8.GetBytes("l" + c.getLocationUpdateString()), c);
         }
 
         public void sendLocationDescription(TexadClient c)
         {
-            sendClientMessage(Encoding.UTF8.GetBytes("s" + c.getLocationDescription()), c);
+            sendClientMessage(Encoding.UTF8.GetBytes("s" + c.getLocationDescriptionString()), c);
         }
 
         public void sendProgressBarUpdate(TexadClient c, int barType, int time)
@@ -187,7 +187,7 @@ namespace Texad_Server
         public void sendClientMessage(Byte[] rawMessage, TexadClient target)
         {
             Byte[] encodedMessage = WebsocketUtility.encodeWebsocketMessage(rawMessage);
-            target.tcpClient.GetStream().Write(encodedMessage, 0, encodedMessage.Length);
+            target.clientStream.Write(encodedMessage, 0, encodedMessage.Length);
         }
 
         public void listenForClients()
@@ -209,7 +209,8 @@ namespace Texad_Server
             Thread t = new Thread(tc.clientReadCycle);
             t.Start();
             sendClientMessage(Encoding.UTF8.GetBytes("sWelcome to the server!"), tc);
-            sendClientMessage(Encoding.UTF8.GetBytes("s" + tc.currentScene.getSceneDescription()), tc);
+            sendClientLocationUpdate(tc);
+            sendClientStoryUpdate(tc.getLocationDescriptionString(), tc);
             updateFormInfo();
         }
 

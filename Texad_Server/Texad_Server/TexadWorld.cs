@@ -29,10 +29,7 @@ namespace Texad_Server
             startScene = TexadSector.addTestScenes(startSector);
         }
 
-        public void incrementWorldTime()
-        {
-            worldTime ++;
-        }
+       
     }
 
     public class TexadBiome //Biomes are large areas that make up the world

@@ -18,11 +18,11 @@ namespace Texad_Server
         public int clientID;
         public string clientName = "unnamed client";
         public TcpClient tcpClient;
-        private NetworkStream clientStream;
+        public NetworkStream clientStream;
         public bool handshakeDone = false;
 
         //Player State Data
-        public TexadCharacter playerCharacter;
+        public TexadPlayerCharacter playerCharacter;
         public TexadCommandInterpreter cmdIntp;
         public List<TexadActionEvent> eventQueue;
         public uint eventStepTime = 0;
@@ -41,7 +41,34 @@ namespace Texad_Server
             eventThread.Start();
             eventQueue = new List<TexadActionEvent>();
             playerCharacter = new TexadPlayerCharacter(this, myServer, w.startScene);
-            cmdIntp = new TexadCommandInterpreter(playerCharacter.actionManager);
+            cmdIntp = new TexadCommandInterpreter(this, playerCharacter.actionManager);
+        }
+
+        public void interperateCommand(string cmd)
+        {
+            cmdIntp.interperateCommand(cmd);
+        }
+
+        public string getStatUpdateString()
+        {
+            string str = playerCharacter.statManager.serializeStats();
+            Console.WriteLine("Stat string sent: " + str);
+            return str;
+        }
+
+        public string getItemUpdateString()
+        {
+            return playerCharacter.inventoryManager.serializeInventory();
+        }
+
+        public string getLocationUpdateString()
+        {
+            return playerCharacter.locationManager.getPositionString();
+        }
+
+        public string getLocationDescriptionString()
+        {
+            return playerCharacter.locationManager.getLocationDescription();
         }
 
         public void stepEventQueue()

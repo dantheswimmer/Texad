@@ -45,6 +45,8 @@ namespace Texad_Server
 
         public void itemRemoved()
         {
+            if (owner == null)
+                return; //TODO: make it get deleted/ decrease quantity from scene
             TexadItemAttribute qatt = getItemAttOfName("Quantity");
             if (qatt != null)
             {
@@ -88,7 +90,7 @@ namespace Texad_Server
                 if (action.actionID == actionID)
                     return action;
             }
-            return TexadActionSystem.NO_ACTION;
+            return null;
         }
 
         public TexadAction getActionOfVerb(string verb)
@@ -98,7 +100,7 @@ namespace Texad_Server
                 if (verb.Equals(a.actionName))
                     return a;
             }
-            return TexadActionSystem.NO_ACTION;
+            return null;
         }
 
         public void addActionsToAvailable()
